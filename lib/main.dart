@@ -19,18 +19,28 @@ Dhtml(Manejo del dom)
 
 **/
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formulario_web_t2/screens/screens.dart';
+
+import 'cubit/cubit/register_cubit.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Material App',
-      debugShowCheckedModeBanner: false,
-      initialRoute: SignUpScreen.route,
-      routes: {SignUpScreen.route: (context) => SignUpScreen()},
+    return BlocProvider<RegisterCubit>(
+      create: (context) => RegisterCubit(),
+      child: MaterialApp(
+        title: 'Material App',
+        debugShowCheckedModeBanner: false,
+        initialRoute: DetailsScreen.route,
+        routes: {
+          AddAndUpdateContactScreen.route: (context) =>
+              AddAndUpdateContactScreen(),
+          DetailsScreen.route: (context) => DetailsScreen()
+        },
+      ),
     );
   }
 }

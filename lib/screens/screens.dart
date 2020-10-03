@@ -1,1 +1,2 @@
-export 'sign_up_screen.dart';
+export 'add_and_update_contacts_screen.dart';
+export 'details_screen.dart';
