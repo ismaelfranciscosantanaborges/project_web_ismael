@@ -12,19 +12,27 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(RegisterLoading(state.values));
     List<User> users = state.values.users;
     users.add(user);
-    await Future.delayed(Duration(seconds: 3));
+    // await Future.delayed(Duration(seconds: 3));
     emit(RegisterSuccess(state.values.copyWith(users: users)));
   }
 
   void updateUser(User user) async {
     emit(RegisterLoading(state.values));
     List<User> users = state.values.users;
-    users = users.map((currentUser) {
-      if (currentUser.id == user.id) return user;
-      return currentUser;
-    });
+    // users = users.map((currentUser) {
+    //   if (currentUser.id == user.id) return user;
+    //   return currentUser;
+    // });
 
-    await Future.delayed(Duration(seconds: 3));
+    // await Future.delayed(Duration(seconds: 3));
+    emit(RegisterSuccess(state.values.copyWith(users: users)));
+  }
+
+  void deleteUser(int id) {
+    emit(RegisterLoading(state.values));
+    List<User> users = state.values.users;
+    users.removeAt(id);
+    // users.removeWhere((currentUser) => currentUser.id == id);
     emit(RegisterSuccess(state.values.copyWith(users: users)));
   }
 }

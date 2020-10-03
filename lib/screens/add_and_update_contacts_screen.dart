@@ -42,7 +42,7 @@ class AddAndUpdateContactScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Agregando contacto',
+                user == null ? 'Agregando contacto' : 'Modificando contacto',
                 style: TextStyle(
                     fontSize: 22,
                     color: Colors.white,
@@ -73,7 +73,7 @@ class _LForm extends StatefulWidget {
 }
 
 class __LFormState extends State<_LForm> {
-  ContactType _character = ContactType.personal;
+  ContactType _character;
   GlobalKey<FormState> _formKey;
   User _user;
   TextEditingController _firtsNameController;
@@ -85,9 +85,10 @@ class __LFormState extends State<_LForm> {
     super.initState();
     _formKey = GlobalKey<FormState>();
     _user = widget.user != null ? widget.user : User();
+    _character = _user.contactType ?? ContactType.personal;
     _firtsNameController = TextEditingController(text: _user?.firstName ?? '');
-    _lastNameController = TextEditingController(text: _user?.firstName ?? '');
-    _telefonoController = TextEditingController(text: _user?.firstName ?? '');
+    _lastNameController = TextEditingController(text: _user?.lastName ?? '');
+    _telefonoController = TextEditingController(text: _user?.telefono ?? '');
   }
 
   @override
@@ -96,7 +97,7 @@ class __LFormState extends State<_LForm> {
     return Container(
         // height: _screenSize.height * 0.6,
         child: BlocConsumer<RegisterCubit, RegisterState>(
-      builder: (context, bloc) {
+      builder: (context, state) {
         return Stack(
           clipBehavior: Clip.none,
           alignment: Alignment.topCenter,
@@ -184,7 +185,11 @@ class __LFormState extends State<_LForm> {
                     _user.lastName = _lastNameController?.text;
                     _user.telefono = _telefonoController?.text;
                     _user.contactType = _character;
-                    context.bloc<RegisterCubit>().addNewUser(_user);
+                    if (widget.user != null) {
+                      context.bloc<RegisterCubit>().updateUser(_user);
+                    } else {
+                      context.bloc<RegisterCubit>().addNewUser(_user);
+                    }
                   }
                 },
                 color: Colors.blue[300],
@@ -194,7 +199,7 @@ class __LFormState extends State<_LForm> {
                 child: Container(
                   padding: EdgeInsets.all(15),
                   child: Text(
-                    'ENVIAR',
+                    widget.user != null ? 'ACTUALIZAR' : 'ENVIAR',
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.white,
@@ -237,6 +242,7 @@ class _CTextFormField extends StatelessWidget {
       child: TextFormField(
         keyboardType: textInputType ?? TextInputType.name,
         controller: _firtsNameController,
+        maxLength: 30,
         decoration: InputDecoration(
           labelText: title ?? '',
         ),
