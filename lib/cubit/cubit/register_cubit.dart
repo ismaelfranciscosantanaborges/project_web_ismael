@@ -6,14 +6,15 @@ import 'package:meta/meta.dart';
 part 'register_state.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
-  RegisterCubit() : super(RegisterInitial(RegisterValues([])));
+  RegisterCubit() : super(RegisterInitial(RegisterValues([], 0)));
 
   void addNewUser(User user) async {
     emit(RegisterLoading(state.values));
     List<User> users = state.values.users;
+    user.id = state.values.index + 1;
     users.add(user);
     // await Future.delayed(Duration(seconds: 3));
-    emit(RegisterSuccess(state.values.copyWith(users: users)));
+    emit(RegisterSuccess(state.values.copyWith(users: users, index: user.id)));
   }
 
   void updateUser(User user) async {

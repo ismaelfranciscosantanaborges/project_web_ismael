@@ -1,4 +1,4 @@
-import 'package:formulario_web_t2/screens/screens.dart';
+import 'package:formulario_web_t2/models/enums.dart';
 
 class User {
   int id;
